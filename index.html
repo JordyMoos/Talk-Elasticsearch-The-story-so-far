@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>reveal.js – The HTML Presentation Framework</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/pbweb.css" id="theme">
+    <link rel="stylesheet" href="css/animate.css">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.12.0.min.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/countUp.js"></script>
+</head>
+
+<body>
+
+<div class="reveal">
+    <img class="pbwebmedia-logo" src="img/pbwebmedia-logo.png">
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section data-state="start-view" data-background-video="video/marvel.mp4" data-background-video-loop data-background-video-muted>
+            <div class="column-1 margin-bottom">
+                <h1 class="main-title">Elasticsearch</h1>
+            </div>
+            <div class="column-1 margin-bottom">
+                <h2 class="sub-title">The story so far</h2>
+            </div>
+            <div class="column-1">
+                <p class="speakers">
+                    Jordy Moos <span class="ampersand">&</span> Frank Koornstra
+                </p>
+            </div>
+            <img class="fly-owl-fly" src="img/pbwebmedia-uil-1.png" />
+        </section>
+
+        <section data-background-image="img/background-triangles.jpg">
+            <img class="we-are-pbwebmedia" src="img/pbwebmedia-logo.png">
+            <img class="reading-owl" src="img/pbwebmedia-uil-2.png" />
+            <aside class="notes">
+                <ul>
+                    <li>Names</li>
+                    <li>PB Web Media</li>
+                    <li>Who uses porn sites?</li>
+                    <li>Numbers</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-state="graphs-views">
+            <div class="column-2">
+                <canvas id="canvas-views" width="700" height="700"></canvas>
+            </div>
+            <div class="column-3">
+                <h3 class="visitors">600,000,000
+                    <small>Visitors</small>
+                </h3>
+                <h3 class="clicks">1,470,000,000
+                    <small>Clicks</small>
+                </h3>
+                <h3 class="pageviews">2,400,000,000
+                    <small>Page views</small>
+                </h3>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    var ctxtViews = document.getElementById("canvas-views").getContext("2d");
+                    var chartViews = new Chart(ctxtViews);
+                    var drawCharts = function () {
+                        var data = [
+                            {
+                                value: 2400,
+                                color: "#EEAB37",
+                                highlight: "#FFBC5A",
+                                label: "Page views"
+                            },
+                            {
+                                value: 1470,
+                                color: "#B6802C",
+                                highlight: "#D39542",
+                                label: "Clicks"
+                            },
+                            {
+                                value: 600,
+                                color: "#966627",
+                                highlight: "#BF823A",
+                                label: "Visitors"
+                            }
+                        ];
+                        chartViews.Doughnut(data, {
+                            animationSteps: 200,
+                            animateScale: false
+                        });
+                    };
+
+                    Reveal.addEventListener('graphs-views', drawCharts, false);
+
+                    var progress = $('.progress span');
+                    progress.append('<strong>');
+                    var owl = $('strong', progress);
+
+                    function animateOwl() {
+                        if (owl.hasClass('odd')) {
+                            owl.removeClass('odd');
+                        } else {
+                            owl.addClass('odd');
+                        }
+                    }
+
+                    Reveal.addEventListener('slidechanged', animateOwl);
+                    Reveal.addEventListener('fragmentshown', animateOwl);
+                    Reveal.addEventListener('fragmenthidden', animateOwl);
+
+                    function randomPosition(min, max)
+                    {
+                        return ((Math.random() * 100) % max) + min
+                    }
+
+                    var flyingOwl = $('.fly-owl-fly');
+                    function handleFlyOwl() {
+                        var props = {
+                            left: randomPosition(-30, 130) + '%',
+                            top: randomPosition(-30, 130) + '%'
+                        };
+                        flyingOwl.animate(props, 5000, 'swing', function() {
+                            if (Reveal.getState().indexh == 0) {
+                                handleFlyOwl();
+                            }
+                        });
+                    }
+
+                    Reveal.addEventListener('start-view', handleFlyOwl);
+                    handleFlyOwl();
+                });
+            </script>
+        </section>
+
+        <section data-state="counters-sites-items">
+            <div>
+                <h1 id="counter-sites"></h1>
+
+                <p>Sites</p>
+            </div>
+
+            <div>
+                <h1 id="counter-items"></h1>
+
+                <p>"Items"</p>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    var options = {
+                        useEasing: true
+                    };
+                    var counterSites = new CountUp("counter-sites", 0, 150, 0, 6, options);
+                    var counterItems = new CountUp("counter-items", 0, 22328781, 0, 60, options);
+                    var drawCounters = function () {
+                        counterSites.reset();
+                        counterSites.start();
+
+                        counterItems.reset();
+                        counterItems.start();
+                    };
+
+                    Reveal.addEventListener("counters-sites-items", drawCounters, false);
+                });
+            </script>
+        </section>
+
+        <section data-background-color="#fff">
+            <img src="img/logo-elastic.png" style="box-shadow: none;"/>
+        </section>
+
+        <section data-background-image="img/soundcloud.png">
+
+        </section>
+
+        <section>
+            <h1>For "dummies"</h1>
+
+            <p>The tricky tweaky token tackler</p>
+
+            <ul class="tokens horizontal fragment">
+                <li><span class="token">The</span></li>
+                <li><span class="token">tricky</span></li>
+                <li><span class="token">tweaky</span></li>
+                <li><span class="token">token</span></li>
+                <li><span class="token">tackler</span></li>
+            </ul>
+            <br>
+            <ul class="tokens fragment" style="width:30%; margin: 0 auto;">
+                <li><span class="token inline">The</span> → 1, 2, ...<br/></li>
+                <li><span class="token inline">tricky</span> → 1, 5, ...<br/></li>
+                <li><span class="token inline">tweaky</span> → 1, 42, ...<br/></li>
+                <li><span class="token inline">token</span> → 1<br/></li>
+                <li><span class="token inline">tackler</span> → 1, 8, ...<br/></li>
+            </ul>
+
+            <aside class="notes">
+                TF/IDF term frequency/inverse document frequency
+            </aside>
+        </section>
+
+        <section>
+            <h4>Index settings</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>"analyzer": {
+  "default_analyzer": {
+    "type": "custom",
+    "tokenizer": "icu_tokenizer",
+    "filter": [
+      "icu_normalizer",
+      "elision",
+      "apostrophe",
+      "porter_stem",
+      "stop"
+    ],
+    "char_filter": []
+  },
+  "raw_analyzer": {
+    ...
+    "filter": [
+      "icu_normalizer",
+      "elision",
+      "apostrophe"
+    ]
+  },
+}</code></pre><!-- @formatter:on -->
+
+            <aside class="notes"><pre><!-- @formatter:off -->
+List of predefined analyzers:
+- language
+
+Tokenizers
+- ICU tokenizer: Unicode® Standard Annex #29 UNICODE TEXT SEGMENTATION
+- keyword
+- pattern
+
+Token filters
+- ICU normalizer: UTF-8 cases to write same in 3 different ways
+- keyword
+- stemmers
+- synonym: amature => amateur
+
+            <!-- @formatter:on --></pre>
+            </aside>
+        </section>
+
+        <section>
+            <h4>Document mapping</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>{
+  "docs_index": {
+    "properties": {
+      "name": {
+        "type": "string",
+        "fields": {
+          "analyzed": {
+            "type": "string",
+            "analyzer": "default_analyzer"
+          }
+        }
+      }
+    }
+  }
+}</code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <ul>
+                    <li>For indexing and searching</li>
+                </ul>
+            </aside>
+
+        </section>
+
+        <section>
+            <!-- @formatter:off --><pre><code>
+curl -XGET 'localhost:9200/_analyze' -d '
+{
+  "analyzer" : "default_analyzer",
+  "text" : "everything is awesome!"
+}'
+            </code></pre><!-- @formatter:on -->
+        </section>
+
+        <section>
+            <div class="column-2">
+                <h2>Raw</h2>
+                <!-- @formatter:off --><pre class="stretch"><code>{
+  "tokens": [
+    {
+      "token": "everything",
+      "start_offset": 0,
+      "end_offset": 10,
+      "type": "&lt;ALPHANUM&gt;",
+      "position": 0
+    },
+    {
+      "token": "is",
+      "start_offset": 11,
+      "end_offset": 13,
+      "type": "&lt;ALPHANUM&gt;",
+      "position": 1
+    },
+    {
+      "token": "awesome",
+      "start_offset": 14,
+      "end_offset": 21,
+      "type": "&lt;ALPHANUM&gt;",
+      "position": 2
+    }
+  ]
+}</code></pre><!-- @formatter:on -->
+            </div>
+
+            <div class="column-2">
+                <h2>Default</h2>
+                <!-- @formatter:off --><pre class="stretch"><code>{
+  "tokens": [
+    {
+      "token": "everyth",
+      "start_offset": 0,
+      "end_offset": 10,
+      "type": "	&lt;ALPHANUM&gt;",
+      "position": 0
+    },
+    {
+      "token": "awesom",
+      "start_offset": 14,
+      "end_offset": 21,
+      "type": "&lt;ALPHANUM&gt;",
+      "position": 2
+    }
+  ]
+}</code></pre><!-- @formatter:on -->
+            </div>
+
+            <aside class="notes"><pre><!-- @formatter:off -->
+Stop filter
+Stemmer
+- try making semantic tokens the same
+- degrees of stemming (Porter2, Porter, etc)
+            <!-- @formatter:on --></pre>
+            </aside>
+        </section>
+
+        <section>
+            <div class="column-2">
+                <h2>Document</h2>
+
+                <p>
+                    Everything is awesome!
+                </p>
+
+                <ul class="tokens">
+                    <li><span class="token">everyth</span></li>
+                    <li><span class="token token-match">awesom</span></li>
+                </ul>
+            </div>
+
+            <div class="column-2">
+                <h2>Search</h2>
+
+                <p>
+                    David Bowie is awesome!
+                </p>
+
+                <ul class="tokens">
+                    <li><span class="token">david</span></li>
+                    <li><span class="token">bowi</span></li>
+                    <li><span class="token token-match">awesom</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h4>Synonyms</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>"analysis": {
+  "filter": [
+    "artist_synonym_filter": {
+      "type": "synonym",
+      "synonyms": [
+        "david bowie => david_bowie"
+      ]
+    }
+  ],
+  "analyzer": [
+    "default_analyzer": {
+      "type": "custom",
+      "tokenizer": "icu_tokenizer",
+      "filter": [
+        "icu_normalizer",
+        "elision",
+        "apostrophe",
+        "artist_synonym_filter",
+        "porter_stem",
+        "stop"
+      ]
+    }
+  ]
+}
+</code></pre><!-- @formatter:on -->
+        </section>
+
+        <section>
+
+            <h4>David bowie is awesome!</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>{
+  "tokens": [
+    {
+      "token": "david_bowi",
+      "start_offset": 0,
+      "end_offset": 11,
+      "type": "SYNONYM",
+      "position": 0
+    },
+    {
+      "token": "awesom",
+      "start_offset": 15,
+      "end_offset": 22,
+      "type": "&lt;ALPHANUM&gt;",
+      "position": 2
+    }
+  ]
+}</code></pre><!-- @formatter:on -->
+        </section>
+
+        <section>
+            <h4>Autocomplete</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>"analysis": {
+  "filter": {
+   "autocomplete_filter": {
+      "type": "edge_ngram",
+      "min_gram": 1,
+      "max_gram": 10
+    }
+  },
+  "analyzer": {
+    "autocomplete_index_analyzer": {
+      "type": "custom",
+      "tokenizer": "keyword",
+      "filter": [
+        "icu_normalizer",
+        "elision",
+        "apostrophe",
+        "autocomplete_filter"
+      ]
+    }
+  }
+}</code></pre><!-- @formatter:on -->
+            <aside class="notes"><pre><!-- @formatter:off -->
+an n-gram is a contiguous sequence of n items from a given sequence of text or speech
+                <!-- @formatter:on --></pre>
+            </aside>
+        </section>
+
+        <section>
+
+            <h4>His plethora of knowledge</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>"tokens": [
+  {
+    "token": "h",
+    "start_offset": 0,
+    "end_offset": 25,
+    "type": "word",
+    "position": 0
+  },
+  {
+    "token": "hi",
+    "start_offset": 0,
+    "end_offset": 25,
+    "type": "word",
+    "position": 0
+  },
+  ...
+  {
+    "token": "his pl",
+    "start_offset": 0,
+    "end_offset": 25,
+    "type": "word",
+    "position": 0
+  },
+  ...</code></pre><!-- @formatter:on -->
+
+        </section>
+
+        <section>
+            <div class="column-2">
+                <h2>Document</h2>
+
+                <p>His plethora of knowledge</p>
+
+                <ul class="tokens">
+                    <li><span class="token token-match">h</span></li>
+                    <li><span class="token">hi</span></li>
+                    <li><span class="token">his</span></li>
+                    <li><span class="token">...</span></li>
+                </ul>
+            </div>
+
+            <div class="column-2 fragment">
+                <h2>Search</h2>
+
+                <p>
+                    heimlich maneuver → heim
+                </p>
+
+                <ul class="tokens">
+                    <li><span class="token token-match">h</span></li>
+                    <li><span class="token">he</span></li>
+                    <li><span class="token">hei</span></li>
+                    <li><span class="token">heim</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h4>Seperate analyzers (settings)</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>"analysis": {
+  "analyzer": {
+    "autocomplete_index_analyzer": {
+      "type": "custom",
+      "tokenizer": "keyword",
+      "filter": [
+        "icu_normalizer",
+        "elision",
+        "apostrophe",
+        "autocomplete_filter"
+      ]
+    },
+    "autocomplete_search_analyzer": {
+      "type": "custom",
+      "tokenizer": "icu_tokenizer",
+      "filter": [
+        "icu_normalizer",
+        "elision",
+        "apostrophe"
+      ]
+    }
+  }
+}</code></pre><!-- @formatter:on -->
+        </section>
+
+        <section>
+            <h4>Separate analyzers (mapping)</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>{
+  "autocomplete_index": {
+    "properties": {
+      "name": {
+        "type": "string",
+        "fields": {
+          "autocomplete": {
+            "type": "string",
+            "analyzer": "autocomplete_index_analyzer",
+            "search_analyzer": "autocomplete_search_analyzer"
+          }
+        }
+      }
+    }
+  }
+}</code></pre><!-- @formatter:on -->
+        </section>
+
+        <section>
+            <div class="column-2">
+                <h2>Document</h2>
+
+                <p>His plethora of knowledge</p>
+
+                <ul class="tokens">
+                    <li><span class="token token-match">h</span></li>
+                    <li><span class="token">hi</span></li>
+                    <li><span class="token">his</span></li>
+                    <li><span class="token">...</span></li>
+                </ul>
+            </div>
+
+            <div class="column-2 fragment">
+                <h2>Search</h2>
+
+                <p>
+                    heimlich maneuver → heim
+                </p>
+
+                <ul class="tokens">
+                    <li><span class="token">heim</span><br/></li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-background-video="video/enders-game.mp4">
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section data-transition="concave-in none-out">
+            <h1>Search</h1>
+            <table>
+                <tr>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <p>
+                            <img src="img/query.png" height="180" alt=""/>
+                        </p>
+                    </td>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <h1 style="display: inline;">→</h1>
+                    </td>
+                    <td style="text-align: center">
+                        <p>
+                            <img src="img/database.png" height="180" alt=""/>
+                        </p>
+                        <div>
+                            <p>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                            </p>
+                            <p>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </section>
+
+        <section data-transition="none-in concave-out">
+            <h1>Search</h1>
+            <table>
+                <tr>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <p>
+                            <img src="img/query.png" height="180" alt=""/>
+                        </p>
+                    </td>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <h1 style="display: inline;">→</h1>
+                    </td>
+                    <td style="text-align: center">
+                        <p>
+                            <img src="img/database.png" height="180" alt=""/>
+                        </p>
+                        <div>
+                            <p>
+                                <img src="img/doc.png" height="180" style="border: 10px solid orange" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                            </p>
+                            <p>
+                                <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid orange" alt=""/>
+                                <img src="img/doc.png" height="180" style="border: 10px solid orange" alt=""/>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section data-transition="concave-in none-out">
+            <h1>Percolate</h1>
+            <table>
+                <tr>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <p>
+                            <img src="img/doc.png" height="180" alt=""/>
+                        </p>
+                    </td>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <h1 style="display: inline;">→</h1>
+                    </td>
+                    <td style="text-align: center">
+                        <p>
+                            <img src="img/database.png" height="180" alt=""/>
+                        </p>
+                        <div>
+                            <p>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                            </p>
+                            <p>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </section>
+
+        <section data-transition="none-in concave-out">
+            <h1>Percolate</h1>
+            <table>
+                <tr>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <p>
+                            <img src="img/doc.png" height="180" alt=""/>
+                        </p>
+                    </td>
+                    <td style="text-align:  center; vertical-align:  middle;">
+                        <h1 style="display: inline;">→</h1>
+                    </td>
+                    <td style="text-align: center">
+                        <p>
+                            <img src="img/database.png" height="180" alt=""/>
+                        </p>
+                        <div>
+                            <p>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid orange" alt=""/>
+                            </p>
+                            <p>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid orange" alt=""/>
+                                <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section>
+            <h2>Percolator query</h2>
+            <!-- @formatter:off --><pre><code>curl -XPUT 'localhost:9200/index/.percolator/1' -d '{
+    "query" : {
+        "match" : {
+            "message" : "everything is awesome"
+        }
+    }
+}'</code></pre><!-- @formatter:on -->
+
+            <h2>Percolator document</h2>
+            <!-- @formatter:off --><pre><code>
+curl -XGET 'localhost:9200/message-index/messages/_percolate' -d '{
+    "doc" : {
+        "message" : "David bowie is awesome!"
+    }
+}'</code></pre><!-- @formatter:on -->
+        </section>
+
+        <section data-background-color="#fff" data-background-image="img/roadrunner.jpg">
+            <!-- @formatter:off --><pre class="fragment"><code>
+curl -XGET 'localhost:9200/message-index/message/1/_percolate'
+        </code></pre><!-- @formatter:on -->
+        </section>
+
+        <section data-background-video="video/engine.mp4">
+            <!-- @formatter:off --><pre class="fragment"><code>
+curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
+'{"percolate" : {"index" : "message-index", "type" : "messages"}}
+{"doc" : {"message" : "speed this up will ya?"}}
+{"percolate" : {"index" : "message-index", "type" : "messages"}}
+{"doc" : {"message" : "can this thing go any faster?!?"}}
+...
+'
+        </code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <ul>
+                    <li>Bulk APIs for almost everything</li>
+                    <li>Safe on REST overhead</li>
+                    <li>Trial and error for message size</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-video="video/space-shuttle.mp4">
+            <!-- @formatter:off --><pre class="fragment"><code>
+curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
+'{"percolate" : {"index" : "message-index", "type" : "messages", "id": 1}}
+{}
+{"percolate" : {"index" : "message-index", "type" : "messages", "id": 2}}
+{}
+...
+'
+        </code></pre><!-- @formatter:on -->
+        </section>
+
+        <section>
+            <img src="img/htop-low.png" style="width: 200%"/>
+
+            <div class="fragment">
+                <p>vs</p>
+                <img src="img/htop-full.png" style="width: 200%"/>
+            </div>
+        </section>
+
+        <section data-background-image="img/phorusrhacidae.png">
+            <aside class="notes">
+                <ul>
+                    <li>Fo Rus <strong>Ha</strong> Ci De</li>
+                    <li>Duck sized horse VS horse sized duck</li>
+                    <li>You don't want 1000 of nodes</li>
+                    <li>ES has overhead</li>
+                    <li>Full memory sucks bad ass</li>
+                    <li>ES treats nodes the same so keep hardware the same</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/eohippus.png">
+
+            <aside class="notes">
+                <ul>
+                    <li>Eo Hip Pus</li>
+                    <li>Full memory sucks bad ass</li>
+                    <li>ES treats nodes the same so keep hardware the same</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/hardware-background.jpg">
+            <h1 class="visible-header">Disks</h1>
+
+            <ul class="tokens">
+                <li><p class="visible-paragraph">SSD</p></li>
+                <li><p class="visible-paragraph">Noop / Deadline</p></li>
+                <li><p class="visible-paragraph">RAID 0</p></li>
+                <li><p class="visible-paragraph">nofile 65535</p></li>
+            </ul>
+
+            <aside class="notes">
+                <p>Slowest subsystem in the server,<br> even more so for write-heavy clusters</p>
+                <ul>
+                    <li>Scheduler: Noop/Deadline can be 500 faster then cfq</li>
+                    <li>RAID 0: No need for duplication</li>
+                    <li>File handles raised</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/cpu.jpg">
+            <h1 class="visible-header">CPU</h1>
+
+            <ul class="tokens">
+                <li>
+                    <p class="visible-paragraph">
+                        Indexing
+                        <small>Searching</small>
+                    </p>
+                </li>
+                <li>
+                    <p class="visible-paragraph">
+                        Cores
+                        <small>speed</small>
+                    </p>
+                </li>
+                <li><p class="visible-paragraph">4~8 cores</p></li>
+            </ul>
+
+            <aside class="notes">
+                <ul>
+                    <li>More for indexing, less for search</li>
+                    <li>Concurrency better than clock speed</li>
+                    <li>4 ~ 8 cores is common</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/fiber.jpg">
+            <h1 class="visible-header">Network</h1>
+
+            <ul class="tokens">
+                <li><p class="visible-paragraph">Single data center</p></li>
+                <li><p class="visible-paragraph">Low latency</p></li>
+                <li><p class="visible-paragraph">High bandwidth (1~10 GbE)</p></li>
+            </ul>
+
+            <aside class="notes">
+                <ul>
+                    <li>Every node is treated the same. Same data centre</li>
+                    <li>Latency: communication</li>
+                    <li>Bandwith: shard movement and recovery</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/memory.jpg">
+            <h1 class="visible-header">Memory</h1>
+            <ul>
+                <li><p class="visible-paragraph">Yes please!</p></li>
+                <li><p class="visible-paragraph">~64GB</p></li>
+                <li><p class="visible-paragraph">Prevent heap resize</p></li>
+                <li><p class="visible-paragraph">Disable swap</p></li>
+            </ul>
+
+            <aside class="notes">
+                <ul>
+                    <li>Memory hungry for sorting, aggregations</li>
+                    <li>ES_MEM_MIN == ES_MEM_MAX == ES_HEAP_SIZE</li>
+                </ul>
+            </aside>
+        </section>
+
+
+        <section>
+            <table class="no-borders">
+                <tr>
+                    <td colspan="2" style="text-align: center;"><img src="img/share.png" style="box-shadow: none;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; width: 50%; position:relative;">
+                        <img src="img/elastic-logo.png" style="box-shadow: none;"/>
+                        <span style="position:absolute; top: 150px; right: 50px;"><b>Max 30.5 GB
+                            GB</b></span>
+                    </td>
+                    <td style="text-align: center; position: relative;">
+                        <img src="img/lucene-logo.png" style="box-shadow: none;"/>
+                        <span style="position:absolute; top: 150px; left: 180px;"><b>~ 50%</b></span>
+                    </td>
+                </tr>
+            </table>
+            <aside class="notes">
+                <ul>
+                    <li>ES: Sort / aggregate</li>
+                    <li>Lucene: Fulltext search</li>
+                    <li>30.5 GB compressed OOPs support.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/split-master.jpg">
+
+        </section>
+
+
+        <section>
+            <h1>Shards</h1>
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="node">
+                            <span class="title">Node 1</span>
+                            <ul>
+                                <li class="primary">P0</li>
+                                <li>R1</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="node">
+                            <span class="title">Node 2</span>
+                            <ul>
+                                <li>R0</li>
+                                <li class="primary">P1</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="node">
+                            <span class="title">Node 3</span>
+                            <ul>
+                                <li>R0</li>
+                                <li>R1</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <aside class="notes">
+                <ul>
+                    <li>Not more than 1 primary per node</li>
+                    <li>More replicas for many searches</li>
+                    <li>More P/R means also more hardware</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h1>RE⋅IN⋅DEX</h1>
+
+            <aside class="notes">
+                <ul>
+                    <li>All the time</li>
+                    <li>2.0 stricter mapping</li>
+                    <li>Change mapping type</li>
+                    <li>Change shard count</li>
+                    <li>Change analyser settings</li>
+                </ul>
+            </aside>
+        </section>
+
+
+        <section>
+            <h1>What's in a name</h1>
+
+            <aside class="notes">
+                <p>Change your cluster name</p>
+                <p>Change your node names</p>
+            </aside>
+        </section>
+
+
+
+    </div>
+</div>
+
+
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        width: 1900,
+        height: 1000,
+        controls: false,
+        history: true,
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
