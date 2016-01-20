@@ -436,6 +436,9 @@ h3.visitors {
 .reveal .stretch {
   max-width: 1280px; }
 
+.reveal pre {
+  max-width: 1280px; }
+
 .reveal pre.stretch code {
   box-sizing: content-box; }
 
@@ -509,3 +512,11 @@ span.dummy {
 
 .reveal img.reading-owl {
   height: 1300px; }
+
+span.speaker {
+  background-color: red;
+  position: absolute;
+  top: 0;
+  left: 0; }
+  span.speaker :after {
+    content: 'Jordy Moos'; }

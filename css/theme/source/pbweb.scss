@@ -112,6 +112,7 @@ span.token-match {
   background: $token-match;
 }
 
+
 .visible-paragraph {
   background: rgba(white, .8);
   color: black;
@@ -234,6 +235,10 @@ h3.visitors {
   max-width: 1280px;
 }
 
+.reveal pre {
+  max-width: 1280px;
+}
+
 .reveal pre.stretch code {
   box-sizing: content-box;
 }
@@ -328,4 +333,15 @@ span.dummy {
 
 .reveal img.reading-owl {
   height: 1300px;
+}
+
+span.speaker {
+  background-color: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  :after {
+    content: 'Jordy Moos';
+  }
 }

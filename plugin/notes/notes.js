@@ -12,6 +12,7 @@
 var RevealNotes = (function() {
 
 	function openNotes() {
+		console.log('open notes');
 		var jsFileLocation = document.querySelector('script[src$="notes.js"]').src;  // this js file path
 		jsFileLocation = jsFileLocation.replace(/notes\.js(\?.*)?$/, '');   // the js folder path
 		var notesPopup = window.open( jsFileLocation + 'notes.html', 'reveal.js - Notes', 'width=1100,height=700' );
@@ -64,6 +65,8 @@ var RevealNotes = (function() {
 				messageData.notes = slideElement.getAttribute( 'data-notes' );
 				messageData.whitespace = 'pre-wrap';
 			}
+
+			console.log(messageData);
 
 			// Look for notes defined in an aside element
 			if( notesElement ) {

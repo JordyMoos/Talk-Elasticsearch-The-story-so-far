@@ -64,6 +64,41 @@
 				font-size: 18px;
 			}
 
+			.speaker-controls-notes ul {
+				margin: 0;
+				padding: 0;
+			}
+
+			.speakers {
+				font-size: 0.6em;
+				margin: 0;
+				padding: 0;
+			}
+			.speakers span {
+				display: inline-block;
+				width:  30%;
+				border-radius: 10px;
+				text-align: center;
+			}
+			.speakers span:nth-child(1) {
+				opacity: 0.2;
+			}
+			.speakers span:nth-child(3) {
+				opacity: 0.8;
+			}
+			.speakers span.frank {
+				background-color: rgba(37, 79, 181, 0.38);
+			}
+			.speakers span.frank::before {
+				content: 'Frank';
+			}
+			.speakers span.jordy {
+				background-color: rgba(87, 181, 42, 0.38);
+			}
+			.speakers span.jordy::before {
+				content: 'Jordy';
+			}
+
 				.speaker-controls-time.hidden,
 				.speaker-controls-notes.hidden {
 					display: none;
@@ -245,6 +280,7 @@
 						}
 						else {
 							notesValue.innerHTML = data.notes;
+							parseSpeakerData();
 						}
 					}
 					else {
@@ -260,6 +296,27 @@
 
 				// Limit to max one state update per X ms
 				handleStateMessage = debounce( handleStateMessage, 200 );
+
+				function parseSpeakerData() {
+					var speakersContainer = notesValue.getElementsByClassName('speakers');
+					if (speakersContainer.length != 1) {
+						return;
+					}
+
+					var speakerContainer = speakersContainer[0];
+					var speakerData = speakerContainer.getAttribute('data-speakers');
+					if ( ! speakerData) {
+						return;
+					}
+
+					var speakerList = speakerData.split(' ');
+					var html = '';
+					speakerList.forEach(function (speaker) {
+						html += '<span class="' + speaker + '"></span>';
+					});
+
+					speakerContainer.innerHTML = html;
+				}
 
 				/**
 				 * Forward keyboard events to the current slide window.

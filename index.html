@@ -45,7 +45,8 @@
     <img class="pbwebmedia-logo" src="img/pbwebmedia-logo.png">
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
-        <section data-state="start-view" data-background-video="video/marvel.mp4" data-background-video-loop data-background-video-muted>
+        <section data-state="start-view" data-background-video="video/marvel.mp4" data-background-video-loop
+                 data-background-video-muted>
             <div class="column-1 margin-bottom">
                 <h1 class="main-title">Elasticsearch</h1>
             </div>
@@ -57,13 +58,19 @@
                     Jordy Moos <span class="ampersand">&</span> Frank Koornstra
                 </p>
             </div>
-            <img class="fly-owl-fly" src="img/pbwebmedia-uil-1.png" />
+            <img class="fly-owl-fly" src="img/pbwebmedia-uil-1.png"/>
+            <aside class="notes">
+                <div class="speakers" data-speakers=" frank frank"></div>
+            </aside>
         </section>
 
         <section data-background-image="img/background-triangles.jpg">
+
             <img class="we-are-pbwebmedia" src="img/pbwebmedia-logo.png">
-            <img class="reading-owl" src="img/pbwebmedia-uil-2.png" />
+            <img class="reading-owl" src="img/pbwebmedia-uil-2.png"/>
+
             <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
                 <ul>
                     <li>Names</li>
                     <li>PB Web Media</li>
@@ -138,18 +145,18 @@
                     Reveal.addEventListener('fragmentshown', animateOwl);
                     Reveal.addEventListener('fragmenthidden', animateOwl);
 
-                    function randomPosition(min, max)
-                    {
+                    function randomPosition(min, max) {
                         return ((Math.random() * 100) % max) + min
                     }
 
                     var flyingOwl = $('.fly-owl-fly');
+
                     function handleFlyOwl() {
                         var props = {
                             left: randomPosition(-30, 130) + '%',
                             top: randomPosition(-30, 130) + '%'
                         };
-                        flyingOwl.animate(props, 5000, 'swing', function() {
+                        flyingOwl.animate(props, 5000, 'swing', function () {
                             if (Reveal.getState().indexh == 0) {
                                 handleFlyOwl();
                             }
@@ -160,6 +167,10 @@
                     handleFlyOwl();
                 });
             </script>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+            </aside>
         </section>
 
         <section data-state="counters-sites-items">
@@ -193,14 +204,37 @@
                     Reveal.addEventListener("counters-sites-items", drawCounters, false);
                 });
             </script>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank jordy"></div>
+            </aside>
         </section>
 
         <section data-background-color="#fff">
             <img src="img/logo-elastic.png" style="box-shadow: none;"/>
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy jordy"></div>
+            </aside>
+        </section>
+
+        <section>
+            <h1>Insights</h1>
+            <h1>Percolate</h1>
+            <h1>Hardware</h1>
+            <h1>Final thoughts</h1>
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+            </aside>
         </section>
 
         <section data-background-image="img/soundcloud.png">
-
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+                <ul>
+                    <li>Tags can most databases do</li>
+                    <li>The text searching is the real strength</li>
+                </ul>
+            </aside>
         </section>
 
         <section>
@@ -225,80 +259,137 @@
             </ul>
 
             <aside class="notes">
-                TF/IDF term frequency/inverse document frequency
+                <div class="speakers" data-speakers="jordy jordy frank"></div>
+                <ul>
+                    <li>Inverted index</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <p>
+                http://localhost:9200/<strong>the-index</strong>/<strong>the-type</strong>
+            </p>
+            <p>
+                Shards
+            </p>
+            <p>
+                Config
+            </p>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank frank"></div>
+                Things you should take for granted<br>
+                Index get split into shards<br>
+                in elasticsearch.yml and jvm parameters<br>
             </aside>
         </section>
 
         <section>
             <h4>Index settings</h4>
 
-            <!-- @formatter:off --><pre class="stretch"><code>"analyzer": {
-  "default_analyzer": {
-    "type": "custom",
-    "tokenizer": "icu_tokenizer",
-    "filter": [
-      "icu_normalizer",
-      "elision",
-      "apostrophe",
-      "porter_stem",
-      "stop"
-    ],
-    "char_filter": []
-  },
-  "raw_analyzer": {
-    ...
-    "filter": [
-      "icu_normalizer",
-      "elision",
-      "apostrophe"
-    ]
-  },
+            <!-- @formatter:off --><pre class="stretch"><code>curl -XPUT 'localhost:9200/the-index' -d '{
+  ....
+  "analyzer": {
+    "default_analyzer": {
+      "type": "custom",
+      "tokenizer": "icu_tokenizer",
+      "filter": [
+        "icu_normalizer",
+        "elision",
+        "apostrophe",
+        "stop",
+        "porter_stem"
+      ],
+      "char_filter": []
+    },
+    "raw_analyzer": {
+      ...
+      "filter": [
+        "icu_normalizer",
+        "elision",
+        "apostrophe"
+      ]
+    }
+  }
+  ...
 }</code></pre><!-- @formatter:on -->
 
-            <aside class="notes"><pre><!-- @formatter:off -->
-List of predefined analyzers:
-- language
-
-Tokenizers
-- ICU tokenizer: Unicode® Standard Annex #29 UNICODE TEXT SEGMENTATION
-- keyword
-- pattern
-
-Token filters
-- ICU normalizer: UTF-8 cases to write same in 3 different ways
-- keyword
-- stemmers
-- synonym: amature => amateur
-
-            <!-- @formatter:on --></pre>
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+                Tokens: semantic unit<br>
+                <br>
+                List of predefined analyzers:<br>
+                - language<br>
             </aside>
         </section>
 
         <section>
-            <h4>Document mapping</h4>
+            <p>
+                I thought it wasn't real.<br/>
+                <span class="token inline">I</span>
+                <span class="token inline">thought</span>
+                <span class="token inline">it</span>
+                <span class="token inline">wasn't</span>
+                <span class="token inline">real</span>
+            </p>
+            <br/>
 
-            <!-- @formatter:off --><pre class="stretch"><code>{
-  "docs_index": {
-    "properties": {
-      "name": {
-        "type": "string",
-        "fields": {
-          "analyzed": {
-            "type": "string",
-            "analyzer": "default_analyzer"
-          }
-        }
-      }
-    }
-  }
-}</code></pre><!-- @formatter:on -->
+            <p>
+                βeta<br/>
+                <span class="token inline">βeta</span> (standard)<br/>
+                <span class="token inline token-match">β</span>
+                <span class="token inline token-match">eta</span> (ICU)
+            </p>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
                 <ul>
-                    <li>For indexing and searching</li>
+                    <li>ICU: International Components for Unicode</li>
+                    <li>Standard VS ICU: much same for lot of languages</li>
+                    <li>Unicode® Standard Annex #29 UNICODE TEXT SEGMENTATION</li>
+                    <li>ICU better at Asian</li>
+                    <li>ICU splits different scripts</li>
+                    <li>Lot's more: keyword, pattern</li>
                 </ul>
             </aside>
 
+        </section>
+
+
+        <section>
+            <p>
+                <strong>ICU normalizer</strong>
+                ÅlesUND → ålesund
+            </p><br/>
+
+            <p>
+                <strong>Elision:</strong>
+                l'avion → avion
+            </p><br/>
+
+            <p>
+                <strong>Apostrophe:</strong>
+                Neo's → Neo
+            </p><br/>
+
+            <p>
+                <strong>Stop:</strong>
+                <strike>the</strike> <strike>is</strike> <strike>and</strike> <strike>or</strike> ...
+            </p><br/>
+
+            <p>
+                <strong>Stemmer:</strong>
+                turn, turned, turns → turn
+            </p>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+                <ul>
+                    <li>Unicode composition</li>
+                    <li>degrees of stemming (Porter2, Porter, etc)</li>
+                </ul>
+            </aside>
         </section>
 
         <section>
@@ -309,11 +400,54 @@ curl -XGET 'localhost:9200/_analyze' -d '
   "text" : "everything is awesome!"
 }'
             </code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank jordy"></div>
+            </aside>
         </section>
 
         <section>
+            <h4>Document mapping</h4>
+
+            <!-- @formatter:off --><pre class="stretch"><code>curl -XPUT 'localhost:9200/the-index/the-type/_mapping' -d '{
+  "the-type": {
+    "properties": {
+      "name": {
+        "type": "string",
+        "fields": {
+          "analyzed": {
+            "type": "string",
+            "analyzer": "default_analyzer"
+          },
+          "raw": {
+            "type": "string",
+            "analyzer": "raw_analyzer"
+          }
+        }
+      }
+    }
+  }
+}</code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy jordy"></div>
+                <ul>
+                    <li>For indexing and searching</li>
+                </ul>
+            </aside>
+
+        </section>
+
+        <section>
+            <!-- @formatter:off --><pre class=""><code>
+curl -XGET 'localhost:9200/_analyze' -d '
+{
+  "analyzer" : "....",
+  "text" : "everything is awesome!"
+}'
+            </code></pre><!-- @formatter:on -->
             <div class="column-2">
-                <h2>Raw</h2>
+                <!--<h2>Raw</h2>-->
                 <!-- @formatter:off --><pre class="stretch"><code>{
   "tokens": [
     {
@@ -342,7 +476,7 @@ curl -XGET 'localhost:9200/_analyze' -d '
             </div>
 
             <div class="column-2">
-                <h2>Default</h2>
+                <!--<h2>Default</h2>-->
                 <!-- @formatter:off --><pre class="stretch"><code>{
   "tokens": [
     {
@@ -363,12 +497,14 @@ curl -XGET 'localhost:9200/_analyze' -d '
 }</code></pre><!-- @formatter:on -->
             </div>
 
-            <aside class="notes"><pre><!-- @formatter:off -->
-Stop filter
-Stemmer
-- try making semantic tokens the same
-- degrees of stemming (Porter2, Porter, etc)
-            <!-- @formatter:on --></pre>
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+                <ul>
+                    <li>Raw / Default</li>
+                    <li>Stop filter</li>
+                    <li>Stemmer</li>
+                    <li>try making semantic tokens the same</li>
+                </ul>
             </aside>
         </section>
 
@@ -377,12 +513,13 @@ Stemmer
                 <h2>Document</h2>
 
                 <p>
-                    Everything is awesome!
+                    David Hasselhoff is drunk!
                 </p>
 
-                <ul class="tokens">
-                    <li><span class="token">everyth</span></li>
-                    <li><span class="token token-match">awesom</span></li>
+                <ul class="tokens fragment">
+                    <li><span class="token token-match">david</span></li>
+                    <li><span class="token">hasselhoff</span></li>
+                    <li><span class="token">drunk</span></li>
                 </ul>
             </div>
 
@@ -393,12 +530,20 @@ Stemmer
                     David Bowie is awesome!
                 </p>
 
-                <ul class="tokens">
-                    <li><span class="token">david</span></li>
+                <ul class="tokens fragment">
+                    <li><span class="token token-match">david</span></li>
                     <li><span class="token">bowi</span></li>
-                    <li><span class="token token-match">awesom</span></li>
+                    <li><span class="token">awesom</span></li>
                 </ul>
             </div>
+
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+                <ul>
+                    <li>David Bowie semantic term</li>
+                </ul>
+            </aside>
         </section>
 
         <section>
@@ -429,12 +574,20 @@ Stemmer
   ]
 }
 </code></pre><!-- @formatter:on -->
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+                <ul>
+                    <li>Semantic terms</li>
+                </ul>
+            </aside>
         </section>
 
         <section>
-
-            <h4>David bowie is awesome!</h4>
-
+            <!-- @formatter:off --><pre class=""><code>curl -XGET 'localhost:9200/_analyze' -d '
+{
+  "analyzer" : "default_analyzer",
+  "text" : "David Bowie is awesome!"
+}'</code></pre><!-- @formatter:on -->
             <!-- @formatter:off --><pre class="stretch"><code>{
   "tokens": [
     {
@@ -453,6 +606,9 @@ Stemmer
     }
   ]
 }</code></pre><!-- @formatter:on -->
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy frank"></div>
+            </aside>
         </section>
 
         <section>
@@ -479,9 +635,9 @@ Stemmer
     }
   }
 }</code></pre><!-- @formatter:on -->
-            <aside class="notes"><pre><!-- @formatter:off -->
-an n-gram is a contiguous sequence of n items from a given sequence of text or speech
-                <!-- @formatter:on --></pre>
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank frank"></div>
+                an n-gram is a contiguous sequence of n items from a given sequence of text or speech
             </aside>
         </section>
 
@@ -514,6 +670,9 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
   },
   ...</code></pre><!-- @formatter:on -->
 
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+            </aside>
         </section>
 
         <section>
@@ -544,6 +703,10 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                     <li><span class="token">heim</span></li>
                 </ul>
             </div>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+            </aside>
         </section>
 
         <section>
@@ -572,6 +735,10 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
     }
   }
 }</code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+            </aside>
         </section>
 
         <section>
@@ -593,6 +760,10 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
     }
   }
 }</code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+            </aside>
         </section>
 
         <section>
@@ -620,27 +791,17 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                     <li><span class="token">heim</span><br/></li>
                 </ul>
             </div>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
+            </aside>
         </section>
 
         <section data-background-video="video/enders-game.mp4">
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank jordy"></div>
+            </aside>
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         <section data-transition="concave-in none-out">
@@ -659,12 +820,14 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                         <p>
                             <img src="img/database.png" height="180" alt=""/>
                         </p>
+
                         <div>
                             <p>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                             </p>
+
                             <p>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
@@ -676,6 +839,9 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
 
             </table>
 
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy jordy"></div>
+            </aside>
         </section>
 
         <section data-transition="none-in concave-out">
@@ -694,12 +860,14 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                         <p>
                             <img src="img/database.png" height="180" alt=""/>
                         </p>
+
                         <div>
                             <p>
                                 <img src="img/doc.png" height="180" style="border: 10px solid orange" alt=""/>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                             </p>
+
                             <p>
                                 <img src="img/doc.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/doc.png" height="180" style="border: 10px solid orange" alt=""/>
@@ -709,18 +877,10 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                     </td>
                 </tr>
             </table>
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+            </aside>
         </section>
-
-
-
-
-
-
-
-
-
-
-
 
 
         <section data-transition="concave-in none-out">
@@ -739,12 +899,14 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                         <p>
                             <img src="img/database.png" height="180" alt=""/>
                         </p>
+
                         <div>
                             <p>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                             </p>
+
                             <p>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
@@ -756,6 +918,9 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
 
             </table>
 
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+            </aside>
         </section>
 
         <section data-transition="none-in concave-out">
@@ -774,12 +939,14 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                         <p>
                             <img src="img/database.png" height="180" alt=""/>
                         </p>
+
                         <div>
                             <p>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/query.png" height="180" style="border: 10px solid orange" alt=""/>
                             </p>
+
                             <p>
                                 <img src="img/query.png" height="180" style="border: 10px solid white" alt=""/>
                                 <img src="img/query.png" height="180" style="border: 10px solid orange" alt=""/>
@@ -789,28 +956,16 @@ an n-gram is a contiguous sequence of n items from a given sequence of text or s
                     </td>
                 </tr>
             </table>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+                <ul>
+                    <li>Ex: Use for classification/categorization</li>
+                    <li>Ex: Pricewatch</li>
+                    <li>Ex: Store users interests</li>
+                </ul>
+            </aside>
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         <section>
@@ -830,13 +985,26 @@ curl -XGET 'localhost:9200/message-index/messages/_percolate' -d '{
         "message" : "David bowie is awesome!"
     }
 }'</code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy frank"></div>
+            </aside>
         </section>
+
+
 
         <section data-background-color="#fff" data-background-image="img/roadrunner.jpg">
             <!-- @formatter:off --><pre class="fragment"><code>
 curl -XGET 'localhost:9200/message-index/message/1/_percolate'
         </code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank jordy"></div>
+            </aside>
         </section>
+
+
+
 
         <section data-background-video="video/engine.mp4">
             <!-- @formatter:off --><pre class="fragment"><code>
@@ -850,6 +1018,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
         </code></pre><!-- @formatter:on -->
 
             <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy frank"></div>
                 <ul>
                     <li>Bulk APIs for almost everything</li>
                     <li>Safe on REST overhead</li>
@@ -857,6 +1026,8 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
                 </ul>
             </aside>
         </section>
+
+
 
         <section data-background-video="video/space-shuttle.mp4">
             <!-- @formatter:off --><pre class="fragment"><code>
@@ -868,7 +1039,13 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
 ...
 '
         </code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank jordy"></div>
+            </aside>
         </section>
+
+
 
         <section>
             <img src="img/htop-low.png" style="width: 200%"/>
@@ -877,16 +1054,22 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
                 <p>vs</p>
                 <img src="img/htop-full.png" style="width: 200%"/>
             </div>
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy frank"></div>
+                <ul>
+                    <li>Single process</li>
+                    <li>Make multi-threaded</li>
+                </ul>
+            </aside>
         </section>
 
-        <section data-background-image="img/phorusrhacidae.png">
+
+        <section data-background-image="img/duck-horse.jpg">
+
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank frank"></div>
                 <ul>
-                    <li>Fo Rus <strong>Ha</strong> Ci De</li>
                     <li>Duck sized horse VS horse sized duck</li>
-                    <li>You don't want 1000 of nodes</li>
-                    <li>ES has overhead</li>
-                    <li>Full memory sucks bad ass</li>
                     <li>ES treats nodes the same so keep hardware the same</li>
                 </ul>
             </aside>
@@ -895,10 +1078,22 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
         <section data-background-image="img/eohippus.png">
 
             <aside class="notes">
+                <div class="speakers" data-speakers="frank frank frank"></div>
                 <ul>
                     <li>Eo Hip Pus</li>
-                    <li>Full memory sucks bad ass</li>
-                    <li>ES treats nodes the same so keep hardware the same</li>
+                    <li>ES has lots of overhead</li>
+                    <li>You don't want 1000 of nodes</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section data-background-image="img/phorusrhacidae.png">
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank frank jordy"></div>
+                <ul>
+                    <li>Fo Rus <strong>Ha</strong> Ci De</li>
+                    <li>Scaling cluster</li>
+                    <li>Reconfiguration subsystem</li>
                 </ul>
             </aside>
         </section>
@@ -914,6 +1109,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
             </ul>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy jordy"></div>
                 <p>Slowest subsystem in the server,<br> even more so for write-heavy clusters</p>
                 <ul>
                     <li>Scheduler: Noop/Deadline can be 500 faster then cfq</li>
@@ -943,6 +1139,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
             </ul>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
                 <ul>
                     <li>More for indexing, less for search</li>
                     <li>Concurrency better than clock speed</li>
@@ -961,6 +1158,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
             </ul>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
                 <ul>
                     <li>Every node is treated the same. Same data centre</li>
                     <li>Latency: communication</li>
@@ -979,6 +1177,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
             </ul>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
                 <ul>
                     <li>Memory hungry for sorting, aggregations</li>
                     <li>ES_MEM_MIN == ES_MEM_MAX == ES_HEAP_SIZE</li>
@@ -990,14 +1189,13 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
         <section>
             <table class="no-borders">
                 <tr>
-                    <td colspan="2" style="text-align: center;"><img src="img/share.png" style="box-shadow: none;"/>
+                    <td colspan="2" style="text-align: center;"><img src="img/share.png" style="box-shadow: none; height: 600px;"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center; width: 50%; position:relative;">
                         <img src="img/elastic-logo.png" style="box-shadow: none;"/>
-                        <span style="position:absolute; top: 150px; right: 50px;"><b>Max 30.5 GB
-                            GB</b></span>
+                        <span style="position:absolute; top: 150px; right: 50px;"><b>Max 30.5 GB</b></span>
                     </td>
                     <td style="text-align: center; position: relative;">
                         <img src="img/lucene-logo.png" style="box-shadow: none;"/>
@@ -1006,6 +1204,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
                 </tr>
             </table>
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy frank"></div>
                 <ul>
                     <li>ES: Sort / aggregate</li>
                     <li>Lucene: Fulltext search</li>
@@ -1016,12 +1215,75 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
 
         <section data-background-image="img/split-master.jpg">
 
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank jordy"></div>
+                <p>What's in a name</p>
+                <p>Change your cluster name</p>
+                <p>Change your node names</p>
+            </aside>
         </section>
+
 
 
         <section>
             <h1>Shards</h1>
 
+            <!-- @formatter:off --><pre class="stretch"><code>"settings": {
+  "index": {
+    ...
+    "number_of_shards": "3",
+    "number_of_replicas": "1",
+    ...
+  }
+}</code></pre><!-- @formatter:on -->
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="frank jordy jordy"></div>
+                <ul>
+                    <li>Not more than 1 primary per node</li>
+                    <li>More replicas for many searches</li>
+                    <li>More P/R means also more hardware</li>
+                </ul>
+            </aside>
+        </section>
+
+
+        <section>
+            <table>
+                <tr>
+                    <td>
+                        <div class="node">
+                            <span class="title">Node 1</span>
+                            <ul>
+                                <li class="primary">P0</li>
+                                <li class="primary">P1</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="node">
+                            <span class="title">Node 2</span>
+                            <ul>
+                                <li class="primary">P2</li>
+                                <li class="primary" style="border-color: white">&nbsp;</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy jordy"></div>
+                <ul>
+                    <li>Not more than 1 primary per node</li>
+                    <li>More replicas for many searches</li>
+                    <li>More P/R means also more hardware</li>
+                </ul>
+            </aside>
+        </section>
+
+
+        <section>
             <table>
                 <tr>
                     <td>
@@ -1055,6 +1317,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
             </table>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy jordy frank"></div>
                 <ul>
                     <li>Not more than 1 primary per node</li>
                     <li>More replicas for many searches</li>
@@ -1067,6 +1330,7 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
             <h1>RE⋅IN⋅DEX</h1>
 
             <aside class="notes">
+                <div class="speakers" data-speakers="jordy frank frank"></div>
                 <ul>
                     <li>All the time</li>
                     <li>2.0 stricter mapping</li>
@@ -1078,20 +1342,15 @@ curl -XGET 'localhost:9200/message-index/message/_mpercolate' -d
         </section>
 
 
-        <section>
-            <h1>What's in a name</h1>
-
+        <section data-background-image="img/mind-blown.jpg">
             <aside class="notes">
-                <p>Change your cluster name</p>
-                <p>Change your node names</p>
+                <div class="speakers" data-speakers="frank frank "></div>
             </aside>
         </section>
 
 
-
     </div>
 </div>
-
 
 
 <script src="lib/js/head.min.js"></script>
